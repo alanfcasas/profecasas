@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profe Casas — Portal Académico</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fff;--bg2:#f8f9fa;--bg3:#f1f3f5;
+  --tx:#111827;--tx2:#6b7280;--tx3:#9ca3af;
+  --bd:rgba(0,0,0,.08);--bd2:rgba(0,0,0,.18);
+  --danger:#dc2626;--success:#16a34a;--info:#1d6fb8;
+  --r:8px;--rl:12px;--rxl:16px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#111827;--bg2:#1f2937;--bg3:#374151;
+    --tx:#f9fafb;--tx2:#9ca3af;--tx3:#6b7280;
+    --bd:rgba(255,255,255,.08);--bd2:rgba(255,255,255,.18);
+    --info:#60a5fa;--success:#34d399;
+  }
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;min-height:100vh}
+.wrap{max-width:680px;margin:0 auto;padding:2rem 1rem}
+.view{display:none}.view.active{display:block}
+
+/* ── Home ── */
+.site-header{text-align:center;margin-bottom:2.5rem}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:0.5px solid var(--bd2);border-radius:99px;padding:4px 14px;font-size:12px;color:var(--tx2);margin-bottom:14px}
+.site-header h1{font-size:30px;font-weight:700;letter-spacing:-0.5px}
+.site-header p{font-size:15px;color:var(--tx2);margin-top:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.scard{background:var(--bg);border:0.5px solid var(--bd);border-radius:var(--rl);padding:1.25rem;cursor:pointer;transition:border-color .15s,transform .1s;text-align:left}
+.scard:hover{border-color:var(--bd2);transform:translateY(-1px)}
+.scard:active{transform:none}
+.scard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.scard-icon{width:46px;height:46px;border-radius:var(--r);display:flex;align-items:center;justify-content:center}
+.scard-icon i{font-size:22px}
+.scard-lock{color:var(--tx3);font-size:18px}
+.scard-name{font-size:15px;font-weight:600;margin-bottom:4px}
+.scard-group{font-size:13px;color:var(--tx2)}
+.site-footer{text-align:center;padding:2.5rem 1rem 3rem;font-size:13px;color:var(--tx3)}
+
+/* ── Unlock ── */
+.unlock{max-width:360px;margin:0 auto;text-align:center;padding:2.5rem 1.5rem}
+.unlock-ico{width:64px;height:64px;border-radius:var(--rxl);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem}
+.unlock-ico i{font-size:28px}
+.unlock h2{font-size:20px;font-weight:700;margin-bottom:8px}
+.unlock .hint{font-size:14px;color:var(--tx2);margin-bottom:1.5rem;line-height:1.6}
+.u-input{width:100%;font-size:15px;padding:11px 14px;border:0.5px solid var(--bd2);border-radius:var(--r);background:var(--bg);color:var(--tx);outline:none;margin-bottom:10px;font-family:inherit}
+.u-input:focus{border-color:var(--info);box-shadow:0 0 0 3px rgba(29,111,184,.12)}
+.btn-primary{width:100%;padding:11px;font-size:15px;font-weight:600;background:var(--tx);color:var(--bg);border:none;border-radius:var(--r);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .15s}
+.btn-primary:hover{opacity:.82}
+.err-msg{font-size:13px;color:var(--danger);margin-bottom:10px;display:none;align-items:center;gap:6px}
+.btn-ghost{background:none;border:none;font-size:14px;color:var(--tx2);cursor:pointer;margin-top:14px;display:flex;align-items:center;gap:6px;margin-left:auto;margin-right:auto}
+.btn-ghost:hover{color:var(--tx)}
+
+/* ── Subject ── */
+.subj-hdr{display:flex;align-items:center;gap:12px;margin-bottom:1.75rem}
+.back-btn{background:none;border:0.5px solid var(--bd2);border-radius:var(--r);padding:7px 13px;font-size:13px;color:var(--tx2);cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;font-family:inherit}
+.back-btn:hover{color:var(--tx);border-color:var(--tx3)}
+.subj-hdr h2{font-size:18px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ── Tabs ── */
+.tabs{display:flex;border-bottom:0.5px solid var(--bd2);margin-bottom:1.5rem}
+.tab{padding:10px 16px;font-size:14px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;color:var(--tx2);margin-bottom:-0.5px;display:flex;align-items:center;gap:7px;font-weight:500;font-family:inherit;transition:color .12s}
+.tab.on{color:var(--tx);border-bottom-color:var(--tx)}
+.tab:hover:not(.on){color:var(--tx)}
+
+/* ── Videos ── */
+.notice{background:var(--bg2);border:0.5px solid var(--bd);border-radius:var(--r);padding:12px 16px;font-size:13px;color:var(--tx2);display:flex;gap:10px;align-items:flex-start;margin-bottom:1rem;line-height:1.5}
+.notice i{font-size:16px;margin-top:1px;flex-shrink:0}
+.vid-card{border:0.5px solid var(--bd);border-radius:var(--rl);overflow:hidden;margin-bottom:12px}
+.vid-card iframe{width:100%;aspect-ratio:16/9;border:none;display:block;background:var(--bg3)}
+.vid-meta{padding:12px 14px}
+.vid-meta h4{font-size:14px;font-weight:600}
+.vid-meta p{font-size:13px;color:var(--tx2);margin-top:2px}
+
+/* ── Material ── */
+.mat-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:0.5px solid var(--bd);border-radius:var(--r);margin-bottom:8px}
+.mat-ico{font-size:22px;color:var(--tx3)}
+.mat-info{flex:1;min-width:0}
+.mat-info h4{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mat-info p{font-size:13px;color:var(--tx2)}
+.dl-btn{font-size:13px;color:var(--info);text-decoration:none;display:flex;align-items:center;gap:4px;white-space:nowrap;font-weight:500}
+.dl-btn:hover{opacity:.75}
+
+/* ── Exercises ── */
+.ej-card{border:0.5px solid var(--bd);border-radius:var(--rl);padding:1.25rem;margin-bottom:12px}
+.ej-label{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--tx3);text-transform:uppercase;margin-bottom:10px}
+.ej-card h4{font-size:15px;font-weight:500;line-height:1.75;margin-bottom:14px}
+.ej-card textarea{width:100%;min-height:130px;resize:vertical;font-size:14px;font-family:inherit;padding:10px 12px;border:0.5px solid var(--bd2);border-radius:var(--r);background:var(--bg2);color:var(--tx);outline:none;line-height:1.6}
+.ej-card textarea:focus{border-color:var(--info);box-shadow:0 0 0 3px rgba(29,111,184,.1);background:var(--bg)}
+.ej-foot{display:flex;align-items:center;gap:12px;margin-top:10px;flex-wrap:wrap}
+.btn-send{padding:9px 18px;font-size:14px;font-weight:600;background:var(--tx);color:var(--bg);border:none;border-radius:var(--r);cursor:pointer;display:flex;align-items:center;gap:7px;transition:opacity .15s;font-family:inherit}
+.btn-send:hover{opacity:.8}
+.ok-msg{font-size:13px;color:var(--success);display:none;align-items:center;gap:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ══ HOME ══ -->
+  <div id="v-home" class="view active">
+    <div class="site-header">
+      <div class="badge"><i class="ti ti-school" aria-hidden="true"></i> UTME · Turno nocturno</div>
+      <h1>Profe Casas</h1>
+      <p>Selecciona tu materia para acceder al material del curso</p>
+    </div>
+    <div class="grid" id="grid"></div>
+    <footer class="site-footer">Ing. en Desarrollo y Gestión de Software · Verano 2026</footer>
+  </div>
+
+  <!-- ══ UNLOCK ══ -->
+  <div id="v-unlock" class="view">
+    <div class="unlock">
+      <div class="unlock-ico" id="u-ico"></div>
+      <h2 id="u-title"></h2>
+      <p class="hint">Ingresa la contraseña que te proporcionó tu maestro para acceder al material</p>
+      <input class="u-input" type="password" id="u-pwd" placeholder="Contraseña del grupo" autocomplete="current-password">
+      <p id="u-err" class="err-msg"><i class="ti ti-alert-circle"></i> Contraseña incorrecta. Intenta de nuevo.</p>
+      <button class="btn-primary" onclick="checkPwd()">Entrar <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+      <button class="btn-ghost" onclick="goHome()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Volver al inicio</button>
+    </div>
+  </div>
+
+  <!-- ══ SUBJECT ══ -->
+  <div id="v-subj" class="view">
+    <div class="subj-hdr">
+      <button class="back-btn" onclick="goHome()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Inicio</button>
+      <h2 id="s-title"></h2>
+    </div>
+    <div class="tabs">
+      <button class="tab on" onclick="switchTab('videos',this)"><i class="ti ti-player-play" aria-hidden="true"></i> Videos</button>
+      <button class="tab" onclick="switchTab('material',this)"><i class="ti ti-files" aria-hidden="true"></i> Material</button>
+      <button class="tab" onclick="switchTab('ejercicios',this)"><i class="ti ti-pencil" aria-hidden="true"></i> Ejercicios</button>
+    </div>
+    <div id="t-videos"></div>
+    <div id="t-material"></div>
+    <div id="t-ejercicios"></div>
+  </div>
+
+</div>
+<script>
+// ── DATOS ───────────────────────────────────────────────
+// Para agregar/editar contenido, modifica este arreglo.
+// Videos: usa el ID de YouTube (la parte después de "watch?v=")
+// Material: pon la URL real del archivo descargable en "url"
+// Ejercicios: escribe la pregunta en "q" usando \n para saltos de línea
+
+const SUBJECTS = [
+  {
+    id: 'movil',
+    name: 'Desarrollo móvil integral',
+    group: 'Grupo 10A',
+    icon: 'ti-device-mobile',
+    bg: '#E6F1FB',
+    ic: '#185FA5',
+    pwd: 'movil2026',   // <-- CAMBIA LA CONTRASEÑA AQUÍ
+    videos: [
+      { title: 'Introducción a Flutter', desc: 'Semana 1 — Conceptos básicos y setup', yt: 'VPvVD8t02U8' },
+      { title: 'Widgets y layouts en Flutter', desc: 'Semana 2 — UI y estructura visual', yt: 'b_sQ9bMltGU' }
+    ],
+    material: [
+      { icon: 'ti-file-type-pdf', name: 'Presentación Unidad I', size: 'PDF · 2.4 MB', url: '#' },
+      { icon: 'ti-file-code', name: 'Proyecto base — Ejercicio 1', size: 'ZIP · 1.1 MB', url: '#' }
+    ],
+    ejercicios: [
+      { label: 'Ejercicio 1', q: '¿Cuál es la diferencia entre un StatelessWidget y un StatefulWidget en Flutter?\n\nDescribe con tus propias palabras cuándo usarías cada uno e incluye un ejemplo de uso real para cada caso.' },
+      { label: 'Tarea 1', q: 'Investiga qué es el árbol de widgets en Flutter.\n\n¿Por qué es importante entenderlo para construir interfaces? Describe cómo funciona y da un ejemplo de un árbol sencillo.' }
+    ]
+  },
+  {
+    id: 'bd',
+    name: 'Extracción de conocimiento en BD',
+    group: 'Grupo 9A',
+    icon: 'ti-database',
+    bg: '#E1F5EE',
+    ic: '#0F6E56',
+    pwd: 'datos2026',   // <-- CAMBIA LA CONTRASEÑA AQUÍ
+    videos: [
+      { title: 'Limpieza de datos con pandas', desc: 'Semana 1 — Dataset Superstore', yt: 'vmEHCJofslg' },
+      { title: 'Análisis exploratorio (EDA)', desc: 'Semana 2 — Visualización inicial', yt: 'xi0vhXFPegw' }
+    ],
+    material: [
+      { icon: 'ti-file-spreadsheet', name: 'Dataset Superstore', size: 'CSV · 3.1 MB', url: '#' },
+      { icon: 'ti-file-code', name: 'Notebook Unidad I — Limpieza', size: 'IPYNB · 890 KB', url: '#' },
+      { icon: 'ti-file-type-pdf', name: 'Guía VS Code + Jupyter', size: 'PDF · 1.2 MB', url: '#' }
+    ],
+    ejercicios: [
+      { label: 'Tarea 1', q: 'Abre el dataset Superstore en Jupyter y responde:\n\n1. ¿Cuántas filas y columnas tiene?\n2. ¿Qué columnas tienen valores nulos?\n3. ¿Qué tipo de dato tiene cada columna?\n\nPega el output de df.info() y explica con tus palabras lo que observas.' },
+      { label: 'Actividad 1', q: '¿Qué problema de negocio podrías responder con el dataset Superstore?\n\nDescribe el problema, las columnas que usarías y qué tipo de análisis harías para resolverlo.' }
+    ]
+  },
+  {
+    id: 'gestion',
+    name: 'Gestión del proceso de software',
+    group: 'Grupo 10A',
+    icon: 'ti-git-branch',
+    bg: '#EEEDFE',
+    ic: '#534AB7',
+    pwd: 'gestion2026',   // <-- CAMBIA LA CONTRASEÑA AQUÍ
+    videos: [
+      { title: 'Introducción a CI/CD', desc: 'Semana 2 — GitHub Actions', yt: 'R8_veQiYBjI' },
+      { title: 'Git Flow y estrategias de branching', desc: 'Semana 2 — Flujos de trabajo en equipo', yt: '1SXpE08hvGs' }
+    ],
+    material: [
+      { icon: 'ti-file-type-pdf', name: 'Rúbrica Proyecto P1', size: 'PDF · 890 KB', url: '#' },
+      { icon: 'ti-file-type-pdf', name: 'Guía GitHub Actions', size: 'PDF · 1.4 MB', url: '#' }
+    ],
+    ejercicios: [
+      { label: 'Actividad 1', q: 'Describe el flujo de trabajo Git que usará tu equipo en el proyecto:\n\n1. ¿Qué estrategia de branching eligieron? (Git Flow, trunk-based, otra)\n2. ¿Por qué es adecuada para su tamaño de equipo?\n3. ¿Cuándo harán merge a main y quién lo aprueba?' },
+      { label: 'Tarea 1', q: 'Investiga las métricas DORA y describe cada una con tus palabras:\n\n- Deployment Frequency\n- Lead Time for Changes\n- Change Failure Rate\n- Time to Restore Service\n\n¿Cuál crees que es más difícil de mejorar en un equipo pequeño? Justifica tu respuesta.' }
+    ]
+  },
+  {
+    id: 'mate',
+    name: 'Matemáticas para ingeniería II',
+    group: 'Grupos 8A y 8B',
+    icon: 'ti-math-function',
+    bg: '#FAEEDA',
+    ic: '#854F0B',
+    pwd: 'mate2026',   // <-- CAMBIA LA CONTRASEÑA AQUÍ
+    videos: [
+      { title: 'Ecuaciones de variables separables', desc: 'Semana 1 — Método y ejemplos', yt: '4ODNZiKV4O0' },
+      { title: 'Ecuaciones lineales de primer orden', desc: 'Semana 2 — Factor integrante', yt: '0d4U3d9i5cE' }
+    ],
+    material: [
+      { icon: 'ti-file-type-pdf', name: 'Formulario — Unidad I', size: 'PDF · 450 KB', url: '#' },
+      { icon: 'ti-file-type-pdf', name: 'Ejercicios de práctica con soluciones', size: 'PDF · 1.8 MB', url: '#' },
+      { icon: 'ti-file-type-pdf', name: 'Tabla de integrales comunes', size: 'PDF · 320 KB', url: '#' }
+    ],
+    ejercicios: [
+      { label: 'Tarea 1', q: 'Resuelve las siguientes ecuaciones diferenciales. Escribe todos los pasos y justifica el método:\n\na) dy/dx = (x² + 1) / y\nb) dy/dx = 2xy\n\n¿Son de variables separables? ¿Cómo lo compruebas?' },
+      { label: 'Tarea 2', q: 'Resuelve la siguiente ecuación lineal de primer orden:\n\ndy/dx + 2y = 4x\n\nDescribe paso a paso:\n1. ¿Cómo identificas que es una ecuación lineal?\n2. ¿Cómo calculas el factor integrante?\n3. ¿Qué integración realizas y cómo la resuelves?' }
+    ]
+  }
+];
+
+// ── ESTADO ──────────────────────────────────────────────
+let cur = null;
+
+// ── HOME ────────────────────────────────────────────────
+function renderHome() {
+  document.getElementById('grid').innerHTML = SUBJECTS.map(s => `
+    <button class="scard" onclick="openUnlock('${s.id}')" aria-label="Abrir ${s.name}">
+      <div class="scard-top">
+        <div class="scard-icon" style="background:${s.bg}">
+          <i class="ti ${s.icon}" style="color:${s.ic}" aria-hidden="true"></i>
+        </div>
+        <i class="ti ti-lock scard-lock" aria-hidden="true"></i>
+      </div>
+      <div class="scard-name">${s.name}</div>
+      <div class="scard-group">${s.group}</div>
+    </button>`).join('');
+}
+
+// ── UNLOCK ──────────────────────────────────────────────
+function openUnlock(id) {
+  cur = SUBJECTS.find(s => s.id === id);
+  const ico = document.getElementById('u-ico');
+  ico.style.background = cur.bg;
+  ico.innerHTML = `<i class="ti ${cur.icon}" style="color:${cur.ic}" aria-hidden="true"></i>`;
+  document.getElementById('u-title').textContent = cur.name;
+  document.getElementById('u-pwd').value = '';
+  document.getElementById('u-err').style.display = 'none';
+  show('unlock');
+  setTimeout(() => document.getElementById('u-pwd').focus(), 150);
+}
+
+function checkPwd() {
+  const v = document.getElementById('u-pwd').value.trim();
+  if (v === cur.pwd) {
+    openSubject();
+  } else {
+    const err = document.getElementById('u-err');
+    err.style.display = 'flex';
+    document.getElementById('u-pwd').select();
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('v-unlock').classList.contains('active')) {
+    checkPwd();
+  }
+});
+
+// ── SUBJECT ─────────────────────────────────────────────
+function openSubject() {
+  document.getElementById('s-title').textContent = cur.name;
+  buildVideos();
+  buildMaterial();
+  buildEjercicios();
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('on', i === 0));
+  ['videos', 'material', 'ejercicios'].forEach((t, i) => {
+    document.getElementById('t-' + t).style.display = i === 0 ? 'block' : 'none';
+  });
+  show('subj');
+}
+
+function buildVideos() {
+  document.getElementById('t-videos').innerHTML =
+    `<div class="notice"><i class="ti ti-info-circle" aria-hidden="true"></i><span>Los videos son material de apoyo. Úsalos para repasar temas de clase o preparar los ejercicios.</span></div>` +
+    cur.videos.map(v => `
+      <div class="vid-card">
+        <iframe src="https://www.youtube.com/embed/${v.yt}" allowfullscreen loading="lazy" title="${v.title}"></iframe>
+        <div class="vid-meta"><h4>${v.title}</h4><p>${v.desc}</p></div>
+      </div>`).join('');
+}
+
+function buildMaterial() {
+  document.getElementById('t-material').innerHTML = cur.material.map(m => `
+    <div class="mat-item">
+      <i class="ti ${m.icon} mat-ico" aria-hidden="true"></i>
+      <div class="mat-info"><h4>${m.name}</h4><p>${m.size}</p></div>
+      <a class="dl-btn" href="${m.url}" download aria-label="Descargar ${m.name}">
+        <i class="ti ti-download" aria-hidden="true"></i> Descargar
+      </a>
+    </div>`).join('');
+}
+
+function buildEjercicios() {
+  document.getElementById('t-ejercicios').innerHTML =
+    `<div class="notice"><i class="ti ti-send" aria-hidden="true"></i><span>Escribe tu respuesta, cópiala y envíala por Teams a tu maestro indicando el nombre del ejercicio.</span></div>` +
+    cur.ejercicios.map((e, i) => `
+      <div class="ej-card">
+        <div class="ej-label">${e.label}</div>
+        <h4>${e.q.replace(/\n/g, '<br>')}</h4>
+        <textarea id="ej${i}" placeholder="Escribe tu respuesta aquí..."></textarea>
+        <div class="ej-foot">
+          <button class="btn-send" onclick="copiar(${i})">
+            <i class="ti ti-copy" aria-hidden="true"></i> Copiar respuesta
+          </button>
+          <span id="ok${i}" class="ok-msg">
+            <i class="ti ti-circle-check" aria-hidden="true"></i> Copiado — pégalo en Teams
+          </span>
+        </div>
+      </div>`).join('');
+}
+
+function copiar(i) {
+  const ta = document.getElementById('ej' + i);
+  if (!ta.value.trim()) { ta.focus(); return; }
+  const texto = `[${cur.ejercicios[i].label} — ${cur.name}]\n\n${ta.value}`;
+  navigator.clipboard.writeText(texto).catch(() => {
+    ta.select();
+    document.execCommand('copy');
+  });
+  const ok = document.getElementById('ok' + i);
+  ok.style.display = 'flex';
+  setTimeout(() => ok.style.display = 'none', 4000);
+}
+
+// ── TABS ────────────────────────────────────────────────
+function switchTab(name, btn) {
+  ['videos', 'material', 'ejercicios'].forEach(t => {
+    document.getElementById('t-' + t).style.display = t === name ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+// ── NAVIGATION ──────────────────────────────────────────
+function goHome() { show('home'); }
+
+function show(v) {
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.getElementById('v-' + v).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ── INIT ────────────────────────────────────────────────
+renderHome();
+</script>
+</body>
+</html>
